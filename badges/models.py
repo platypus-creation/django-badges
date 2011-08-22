@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -55,8 +56,7 @@ class Badge(models.Model):
                 
         badge_awarded.send(sender=self.meta_badge, user=user, badge=self)
         
-        message_template = "You just got the %s Badge!"
-        user.message_set.create(message = message_template % self.title)
+        user.message_set.create(message = _(u'You just got the "%s" Badge!') % self.title)
         
         return BadgeToUser.objects.filter(badge=self, user=user).count()
 
