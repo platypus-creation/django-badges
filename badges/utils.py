@@ -71,9 +71,6 @@ class MetaBadge(object):
     progress_finish = 1
     
     def __init__(self):
-        # whenever the server is reloaded, the badge will be initialized and
-        # added to the database
-        self._keep_badge_updated()
         post_save.connect(self._signal_callback, sender=self.model)
     
     def _signal_callback(self, **kwargs):
