@@ -4,7 +4,7 @@ An easy to use app that provides Stack Overflow style badges with a minimum ammo
 See the README file for details, usage info, and a list of gotchas.
 """
 
-from setuptools import setup, find_packages()
+from setuptools import setup, find_packages
 
 setup(
     name='django-badges',
@@ -17,6 +17,7 @@ setup(
     keywords='django badges social',
     url='http://bitbucket.org/jiaaro/django-badges/',
     packages = find_packages(),
+    include_package_data=True,
     package_data={'badges': ['badges/templates/badges/*.html']},
     long_description=__doc__,
     classifiers=[
