@@ -12,8 +12,8 @@ class RequiresUserOrProgress(Exception): pass
 registered_badges = {}
 
 def register(badge):
-    if badge.id not in registered_badges:
-        registered_badges[badge.id] = badge()
+    if badge.name not in registered_badges:
+        registered_badges[badge.name] = badge()
     return badge
 
 def badge_count(user_or_qs=None):
@@ -109,7 +109,7 @@ class MetaBadge(object):
     def _keep_badge_updated(self):
         if getattr(self, 'badge', False):
             return False
-        badge, created = BadgeModel.objects.get_or_create(id=self.id)
+        badge, created = BadgeModel.objects.get_or_create(name=self.name)
         if badge.level != self.level:
             badge.level = self.level
             badge.save()

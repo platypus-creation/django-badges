@@ -11,7 +11,7 @@ def overview(request, extra_context={}):
     return render_to_response("badges/overview.html", context, context_instance=RequestContext(request))
 
 def detail(request, slug, extra_context={}):
-    badge = get_object_or_404(Badge, id=slug)
+    badge = get_object_or_404(Badge, name=slug)
     users = badge.user.all()
     
     context = locals()

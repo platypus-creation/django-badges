@@ -20,7 +20,7 @@ else:
     )
 
 class Badge(models.Model):
-    id = models.CharField(max_length=255, primary_key=True)
+    name = models.CharField(max_length=255, unique=True)
     user = models.ManyToManyField(User, related_name="badges", through='BadgeToUser')
     level = models.CharField(max_length=1, choices=LEVEL_CHOICES)
     
@@ -31,7 +31,7 @@ class Badge(models.Model):
     @property
     def meta_badge(self):
         from utils import registered_badges
-        return registered_badges[self.id]
+        return registered_badges[self.name]
     
     @property
     def title(self):
@@ -45,7 +45,7 @@ class Badge(models.Model):
         return u"%s" % self.title
     
     def get_absolute_url(self):
-        return reverse('badge_detail', kwargs={'slug': self.id})
+        return reverse('badge_detail', kwargs={'slug': self.name})
     
     def award_to(self, user):
         has_badge = self in user.badges.all()

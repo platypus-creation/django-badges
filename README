@@ -27,7 +27,7 @@ fields on their profile:
     from myapp.models import UserProfile
 
     class Autobiographer(badges.MetaBadge):
-        id = "autobiographer"
+        name = "autobiographer"
         model = UserProfile
         one_time_only = True
 
@@ -87,7 +87,7 @@ and 1 if they have (so it jumps from 0% to 100% when they earn the badge)
 You can get the percent completion of a badge for a given user like so:
 
     >>> user = User.objects.create(username='tester', email='tester@example.com')
-    >>> badge = Badge.objects.get(id='autobiographer')
+    >>> badge = Badge.objects.get(name='autobiographer')
 
     >>> badge.meta_badge.get_progress(user)
     ... 1
@@ -113,7 +113,7 @@ There are some badge info attributes which define the information about
 the badge that will be shown on your website:
 
     
-#### id
+#### name
 the unique name that will be used to identify the badge in your 
 database. The reason for this is so that you can change the title, 
 description, and level without worry

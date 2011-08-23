@@ -12,7 +12,7 @@ class BadgeTests(TestCase):
     def setUp(self):
         registered_badges.clear()
         class YouveGotMail(MetaBadge):
-            id = 'youve-got-mail'
+            name = 'youve-got-mail'
             model = User
             one_time_only = True
             
@@ -29,22 +29,22 @@ class BadgeTests(TestCase):
         self.meta_badge = YouveGotMail
     
     def test_badge_creation(self):
-        badge = Badge.objects.get(id=self.meta_badge.id)
+        badge = Badge.objects.get(name=self.meta_badge.name)
         self.assertTrue(isinstance(badge.meta_badge, self.meta_badge))
         
     def test_badge_registration(self):
-        meta_badge_instance = registered_badges[self.meta_badge.id]
+        meta_badge_instance = registered_badges[self.meta_badge.name]
         self.assertTrue(isinstance(meta_badge_instance, self.meta_badge))
         
     def test_badge_registration_only_happens_once(self):
         meta_badge = register_badge(self.meta_badge)
-        meta_badge_instance = registered_badges[meta_badge.id]
+        meta_badge_instance = registered_badges[meta_badge.name]
         register_badge(self.meta_badge)
         
-        self.assertTrue(registered_badges[meta_badge.id] is meta_badge_instance)
+        self.assertTrue(registered_badges[meta_badge.name] is meta_badge_instance)
 
     def test_badge_progress(self):
-        badge = Badge.objects.get(id=self.meta_badge.id)
+        badge = Badge.objects.get(name=self.meta_badge.name)
 
         user = User(username='zodiac', first_name='john', last_name='doe')
         user.save()
@@ -82,7 +82,7 @@ class BadgeTests(TestCase):
         self.assertEqual(signal_handler_kwargs.get('badge'), Badge.objects.all()[0])
 
     def test_template_tags(self):
-        badge = Badge.objects.get(id=self.meta_badge.id)
+        badge = Badge.objects.get(name=self.meta_badge.name)
 
         self.assertEqual(level_count(Badge.objects.all(), '1'), 1)
         self.assertEqual(level_count(Badge.objects.all(), '2'), 0)
