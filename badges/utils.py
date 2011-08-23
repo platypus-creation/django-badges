@@ -111,13 +111,10 @@ class MetaBadge(object):
         return (100.0 * progress) / (self.progress_finish - self.progress_start)
     
     def _keep_badge_updated(self):
-        if getattr(self, 'badge', False):
-            return False
         badge, created = BadgeModel.objects.get_or_create(name=self.name)
         if badge.level != self.level:
             badge.level = self.level
             badge.save()
-        self.badge = badge
     
     def award_ceremony(self, instance):
         if self._test_conditions(instance):
