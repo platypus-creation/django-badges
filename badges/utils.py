@@ -86,6 +86,13 @@ class MetaBadge(object):
     def get_user(self, instance):
         return instance.user
 
+    _badge = None
+    @property
+    def badge(self):
+        if not self._badge:
+            self._badge = BadgeModel.objects.get(name=self.name)
+        return self._badge
+
     def get_progress(self, user):
         if BadgeToUser.objects.filter(user=user, badge=self.badge).count():
             return 1
