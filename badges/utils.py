@@ -70,6 +70,15 @@ class MetaBadge(object):
     progress_start = 0
     progress_finish = 1
     
+    checks = {}
+
+    @classmethod
+    def check_method(cls, text, url):
+        def _description(f):
+            cls.checks[f.__name__] = {'text': text, 'url': url}
+            return f
+        return _description
+    
     def __init__(self):
         post_save.connect(self._signal_callback, sender=self.model)
     
