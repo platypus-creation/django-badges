@@ -70,12 +70,12 @@ class MetaBadge(object):
     progress_start = 0
     progress_finish = 1
     
-    checks = {}
+    all_checks = {}
 
     @classmethod
-    def check_method(cls, text, url):
+    def description(cls, text, url):
         def _description(f):
-            cls.checks[f.__name__] = {'text': text, 'url': url}
+            cls.all_checks[f.__name__] = {'text': text, 'url': url}
             return f
         return _description
     
