@@ -70,14 +70,27 @@ class MetaBadge(object):
     progress_start = 0
     progress_finish = 1
     
-    all_checks = {}
-
+    _all_checks = None
+    @property
+    def all_checks(self):
+        if not self._all_checks:
+            self._all_checks = {}
+            for f in [getattr(self, c) for c in dir(self) if c.startswith('check')]:
+                if hasattr(f, 'text') and hasattr(f, 'url'):
+                    self._all_checks[f.__name__] = {'text': f.text, 'url': f.url}
+        return self._all_checks
+    
+    def get_instance_for_user(self, user):
+        """Meta Badges should implement a way for a user to know its global progression on a badge."""
+        raise NotImplementedError
+    
     @classmethod
-    def description(cls, text, url):
-        def _description(f):
-            cls.all_checks[f.__name__] = {'text': text, 'url': url}
+    def describe_check(cls, text, url):
+        def _describe_check(f):
+            f.text = text
+            f.url = url
             return f
-        return _description
+        return _describe_check
     
     def __init__(self):
         post_save.connect(self._signal_callback, sender=self.model)
