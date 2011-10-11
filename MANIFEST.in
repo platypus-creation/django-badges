@@ -1,0 +1,4 @@
+include README
+include LICENSE
+recursive-include badges/locale *
+recursive-include badges/templates *

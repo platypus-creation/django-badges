@@ -18,7 +18,6 @@ setup(
     url='http://bitbucket.org/jiaaro/django-badges/',
     packages = find_packages(),
     include_package_data=True,
-    package_data={'badges': ['badges/templates/badges/*.html', 'badges/locale/*']},
     long_description=__doc__,
     classifiers=[
     	'Development Status :: 5 - Production/Stable',
