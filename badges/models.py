@@ -80,3 +80,9 @@ class BadgeToUser(models.Model):
     user = models.ForeignKey(User)
     
     created = models.DateTimeField(default=datetime.now)
+    
+    def __unicode__(self):
+        return "%s %s" % (self.user.get_full_name(), self.badge.name)
+        
+    class Meta:
+        ordering = ('-created',)
