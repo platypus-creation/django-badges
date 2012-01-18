@@ -1,3 +1,5 @@
+LICENSE
+MANIFEST.in
 README
 badges/__init__.py
 badges/admin.py
@@ -7,11 +9,20 @@ badges/signals.py
 badges/urls.py
 badges/utils.py
 badges/views.py
+badges/locale/en/LC_MESSAGES/django.mo
+badges/locale/en/LC_MESSAGES/django.po
+badges/locale/fr/LC_MESSAGES/django.mo
+badges/locale/fr/LC_MESSAGES/django.po
 badges/management/__init__.py
 badges/management/commands/__init__.py
 badges/management/commands/create_badges.py
 badges/migrations/0001_initial.py
 badges/migrations/__init__.py
+badges/templates/badges/.tmp_badge.html.54872~
+badges/templates/badges/badge.html
+badges/templates/badges/badges_display.html
+badges/templates/badges/detail.html
+badges/templates/badges/overview.html
 badges/templatetags/__init__.py
 badges/templatetags/badges_tags.py
 django_badges.egg-info/PKG-INFO
