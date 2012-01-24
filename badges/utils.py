@@ -79,11 +79,7 @@ class MetaBadge(object):
                 if hasattr(f, 'text') and hasattr(f, 'url'):
                     self._all_checks[f.__name__] = {'text': f.text, 'url': f.url}
         return self._all_checks
-    
-    def get_instance_for_user(self, user):
-        """Meta Badges should implement a way for a user to know its global progression on a badge."""
-        raise NotImplementedError
-    
+        
     @classmethod
     def describe_check(cls, text, url):
         def _describe_check(f):

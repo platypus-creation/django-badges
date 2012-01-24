@@ -42,7 +42,7 @@ class Badge(models.Model):
         return self.meta_badge.description
     
     def __unicode__(self):
-        return u"%s" % self.title
+        return unicode(self.meta_badge.title)
     
     def get_absolute_url(self):
         return reverse('badge_detail', kwargs={'slug': self.name})
@@ -56,7 +56,7 @@ class Badge(models.Model):
                 
         badge_awarded.send(sender=self.meta_badge, user=user, badge=self)
         
-        user.message_set.create(message = _(u'You just got the "%s" Badge!') % self.title)
+        # user.message_set.create(message = _(u'You just got the "%s" Badge!') % self.title)
         
         return BadgeToUser.objects.filter(badge=self, user=user).count()
 

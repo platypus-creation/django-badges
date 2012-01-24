@@ -1,6 +1,6 @@
 from django import template
 from badges.utils import badge_count
-from badges.models import LEVEL_CHOICES
+from badges.models import LEVEL_CHOICES, Badge
 import re
 level_choices = dict(LEVEL_CHOICES)
 
@@ -41,41 +41,45 @@ def progress(badge, user):
 @register.filter
 def is_in_progress(badge, user):
     return 0 < badge.meta_badge.get_progress(user) < progress_finish(badge) 
- 
+
 @register.filter
 def progress_percentage(badge, user):
     prog = badge.meta_badge.get_progress_percentage(user=user)
     return max(min(prog, 100), 0)
-    
-class CheckNode(template.Node):
-    def __init__(self, badge, check, user, var_name):
-        self.badge = template.Variable(badge)
-        self.check = template.Variable(check)
-        self.user = template.Variable(user)
+ 
+REGEXP = re.compile(r'([\w\s]+) as (\w+)')
+class GetBadge(template.Node):
+    badges = list(Badge.objects.all())
+    def __init__(self, group, level, var_name):
+        self.group = template.Variable(group)
+        self.level = template.Variable(level)
         self.var_name = var_name
-        
+
     def render(self, context):
-        metabadge = self.badge.resolve(context).meta_badge
-        user = self.user.resolve(context)
-        check = self.check.resolve(context)
-        instance = metabadge.get_instance_for_user(user)
-        context[self.var_name] = getattr(metabadge, check)(instance)
-        return ''
+        group = self.group.resolve(context)
+        level = str(self.level.resolve(context))
+        for badge in self.badges:
+            if badge.meta_badge.level == level and badge.meta_badge.group == group:
+                context[self.var_name] = badge
+                return ''
 
 @register.tag
-def check(parser, token):
-    # This version uses a regular expression to parse tag contents.
+def get_badge(parser, token):
+    """
+    {% get_badge group level as badge %}
+    {% get_badge "member" 2 as badge %}
+    """
     try:
-        # Splitting by None == splitting by spaces.
         tag_name, arg = token.contents.split(None, 1)
     except ValueError:
         raise template.TemplateSyntaxError("%r tag requires arguments" % token.contents.split()[0])
-    m = re.search(r'([\w\s\.]+) as (\w+)', arg)
-    if not m:
+    matches = REGEXP.search(arg)
+    if not matches:
         raise template.TemplateSyntaxError("%r tag had invalid arguments" % tag_name)
-    args, var_name = m.groups()
+    args, var_name = matches.groups()
     try:
-        badge, check, user = args.split(None)
+        group, level = args.split(None)
     except ValueError:
-        raise template.TemplateSyntaxError("%r tag requires arguments badge, check and obj" % token.contents.split()[0])
-    return CheckNode(badge, check, user, var_name)
+        raise template.TemplateSyntaxError("%r tag requires arguments group and level" % token.contents.split()[0])
+    return GetBadge(group, level, var_name)
+    
