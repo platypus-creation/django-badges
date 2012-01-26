@@ -3,8 +3,9 @@ from django.contrib import admin
 from badges.models import Badge, BadgeToUser
 
 class BadgeAdmin(admin.ModelAdmin):
+    list_display = ('title', 'group', 'level', 'icon')
     fields = ('icon',)
-    list_display = ('name','level')
+    list_filter = ('level',)
 
 admin.site.register(Badge, BadgeAdmin)
 

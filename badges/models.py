@@ -36,6 +36,10 @@ class Badge(models.Model):
     @property
     def title(self):
         return self.meta_badge.title
+
+    @property
+    def group(self):
+        return self.meta_badge.group
     
     @property
     def description(self):
@@ -73,6 +77,9 @@ class Badge(models.Model):
         else:
             kwargs.update(dict(user__in=user_or_qs))
         return BadgeToUser.objects.filter(**kwargs).count()
+        
+    class Meta:
+        ordering = ('level',)
 
 
 class BadgeToUser(models.Model):
