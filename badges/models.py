@@ -24,7 +24,7 @@ class Badge(models.Model):
     user = models.ManyToManyField(User, related_name="badges", through='BadgeToUser')
     level = models.CharField(max_length=1, choices=LEVEL_CHOICES)
     
-    icon = models.ImageField(upload_to='badge_images')
+    icon = models.ImageField(upload_to='uploads/badge_images')
     
     objects = BadgeManager()
     
