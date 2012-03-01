@@ -15,4 +15,9 @@ class BadgeToUserAdmin(admin.ModelAdmin):
     list_filter = ('badge', 'user',)
     date_hierarchy = 'created'
 
+    raw_id_fields = ('user',)
+    autocomplete_lookup_fields = {
+        'fk': ['user'],
+    }
+    
 admin.site.register(BadgeToUser, BadgeToUserAdmin)
